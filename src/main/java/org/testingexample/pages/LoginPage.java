@@ -1,4 +1,39 @@
 package org.testingexample.pages;
 
-public class LoginPage {
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+
+public class LoginPage extends BasePage{
+
+
+    public LoginPage(WebDriver driver) {
+        super(driver);
+    }
+
+    private By emailId = By.name("email");
+    private By pass = By.name("password");
+    private By loginPath = By.xpath("//button[contains(text(),'Submit ')]");
+
+
+    // //*[@id="root"]/div/div[2]/div/form/button
+
+    public void enterEmail(String email){
+        wait.until(ExpectedConditions.visibilityOfElementLocated(emailId)).sendKeys(email);
+    }
+
+    public void enterPassword(String password){
+        wait.until(ExpectedConditions.visibilityOfElementLocated(pass)).sendKeys(password);
+    }
+
+    public void clickLogin(){
+        click(loginPath);
+//        wait.until(ExpectedConditions.elementToBeClickable(loginPath)).click();
+    }
+
+    public void login(String email, String password){
+        enterEmail(email);
+        enterPassword(password);
+        clickLogin();
+    }
 }
