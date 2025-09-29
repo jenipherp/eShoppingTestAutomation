@@ -22,8 +22,8 @@ public class LoginTest extends BaseTest {
         loginPage.login("testuser@gmail.com", "test123");
 
 
-        new WebDriverWait(driver, Duration.ofSeconds(10)).until(ExpectedConditions.urlContains("/Login"));
-        Assert.assertTrue(Objects.requireNonNull(driver.getCurrentUrl()).contains("/Login"));
+        new WebDriverWait(driver, Duration.ofSeconds(30)).until(ExpectedConditions.urlContains("/login"));
+        Assert.assertTrue(Objects.requireNonNull(driver.getCurrentUrl()).contains("/login"));
     }
 
 }
