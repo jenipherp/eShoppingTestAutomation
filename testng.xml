@@ -1,7 +1,28 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="eShopping Tests" parallel="false">
-    <test name="full flow">
+    <parameter name="browser" value="chrome" />
+    <!-- Smoke Test Suite -->
+    <test name="SmokeTests">
+        <groups>
+            <run>
+                <include name="smoke"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="test.LoginTest"/>
+            <class name="test.SignUpTest"/>
+            <class name="test.ProductTest"/>
+        </classes>
+    </test>
+
+    <!-- Regression Test Suite -->
+    <test name="RegressionTests">
+        <groups>
+            <run>
+                <include name="regression"/>
+            </run>
+        </groups>
         <classes>
             <class name="test.SignUpTest" />
             <class name="test.LoginTest" />

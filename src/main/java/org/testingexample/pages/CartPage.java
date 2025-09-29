@@ -15,7 +15,7 @@ public class CartPage extends BasePage{
     private By checkOutBtn = By.xpath("//button[text()='Proceed to Checkout']");
     private By cartBadge = By.cssSelector(".nav-cart-count");
 
-    public void productInCart(){
+    public void addItemToCart(){
             //waitForVisibility(product.goToCart()) ;
         if(cartBadge!=null) click(cartLink);
 
@@ -23,5 +23,9 @@ public class CartPage extends BasePage{
 
     public void proceedCheckOut(){
         waitForClickable(checkOutBtn).click();
+    }
+
+    public void removeItemFromCart(){
+
     }
 }

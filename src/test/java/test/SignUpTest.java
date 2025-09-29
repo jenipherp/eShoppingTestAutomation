@@ -12,7 +12,7 @@ import java.util.Objects;
 
 public class SignUpTest extends BaseTest{
 
-    @Test
+    @Test(groups = "smoke")
     public void testSignup(){
         HomePage home = new HomePage(driver);
         home.open();

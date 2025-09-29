@@ -26,10 +26,10 @@ public class BaseTest {
         driver.get("https://jeni-genii.onrender.com");
     }
 
-    @AfterClass
-    public void tearDown(){
-        if(driver != null) {
-            driver.quit();
-        }
-    }
+//    @AfterClass
+//    public void tearDown(){
+//        if(driver != null) {
+//            driver.quit();
+//        }
+//    }
 }

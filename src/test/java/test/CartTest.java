@@ -7,7 +7,7 @@ import org.testng.annotations.Test;
 
 public class CartTest extends BaseTest{
 
-    @Test
+    @Test(groups = "smoke")
     public void checkout(){
         HomePage home = new HomePage(driver);
         home.open();
@@ -18,7 +18,7 @@ public class CartTest extends BaseTest{
         product.openMenCategory();
         product.openProduct();
         //product.goToCart();
-        cart.productInCart();
+        cart.addItemToCart();
         cart.proceedCheckOut();
 
     }

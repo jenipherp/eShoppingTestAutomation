@@ -6,7 +6,7 @@ import org.testng.annotations.Test;
 
 public class ProductTest extends BaseTest{
 
-    @Test
+    @Test(groups = "smoke")
     public void testProduct(){
         HomePage home = new HomePage(driver);
         home.open();
