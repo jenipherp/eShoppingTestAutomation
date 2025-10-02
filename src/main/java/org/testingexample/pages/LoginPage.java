@@ -15,8 +15,6 @@ public class LoginPage extends BasePage{
     private By pass = By.name("password");
     private By loginPath = By.xpath("//button[contains(text(),'Submit ')]");
 
-
-
     public void enterEmail(String email){
         wait.until(ExpectedConditions.visibilityOfElementLocated(emailId)).sendKeys(email);
     }

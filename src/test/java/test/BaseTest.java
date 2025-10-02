@@ -2,31 +2,24 @@ package test;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import java.time.Duration;
 
 public class BaseTest {
 
-    public  WebDriver driver;
+    protected static WebDriver driver;
 
-    @BeforeMethod
+    @BeforeSuite(alwaysRun = true)
     public void SetUp() {
         driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
         driver.manage().window().maximize();
-
-    }
-
-    @Test
-    public void landingPage(){
         driver.get("https://jeni-genii.onrender.com");
     }
 
-//    @AfterClass
+
+//    @AfterSuite(alwaysRun = true)
 //    public void tearDown(){
 //        if(driver != null) {
 //            driver.quit();

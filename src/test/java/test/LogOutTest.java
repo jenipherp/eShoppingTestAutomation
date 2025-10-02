@@ -1,19 +1,21 @@
 package test;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testingexample.pages.BasePage;
 import org.testingexample.pages.HomePage;
+import org.testingexample.pages.LogOutPage;
 import org.testingexample.pages.LoginPage;
 import org.testng.annotations.Test;
 
 public class LogOutTest extends BaseTest{
 
-    //LoginTest logintest = new LoginTest();
-    @Test(groups = "smoke", dependsOnMethods = {"test.LoginTest.loginwithValidCredentials"})
+
+    @Test(dependsOnMethods = "test.LoginTest.loginwithValidCredentials",groups = "smoke")
     public void logout(){
-        //HomePage home = new HomePage(driver);
+        //HomePage homePage = new HomePage(driver);
+        LogOutPage logOutPage = new LogOutPage(driver);
 
-        //LoginPage loginpage = new LoginPage(driver);
-
-        driver.findElement(By.xpath("//button[contains(text(),'Logout')]")).click();
+        logOutPage.logout();
     }
 }

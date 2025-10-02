@@ -11,6 +11,7 @@
         </groups>
         <classes>
             <class name="test.LoginTest"/>
+            <class name="test.LogOutTest"/>
             <class name="test.SignUpTest"/>
             <class name="test.ProductTest"/>
         </classes>
