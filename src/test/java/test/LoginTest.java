@@ -45,6 +45,9 @@ public class LoginTest extends BaseTest {
         // driver.switchTo().window(driver.getWindowHandle());
         //Thread.sleep(500);
         //Alert alert = driver.switchTo().alert();
+        String alertMsg = alert.getText();
+        System.out.println(alertMsg);
+        Assert.assertEquals(alertMsg,"Password is incorrect.");
         alert.accept();
         // Thread.sleep(500);
 
@@ -66,9 +69,15 @@ public class LoginTest extends BaseTest {
         //with invalid credential alert msg box opens and click ok in the alert box
        WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(30));
       Alert alert =  wait.until(ExpectedConditions.alertIsPresent());
+
+     // [This code is not working has a fallback
       // driver.switchTo().window(driver.getWindowHandle());
        //Thread.sleep(500);
-       //Alert alert = driver.switchTo().alert();
+       //Alert alert = driver.switchTo().alert();]
+
+       String alertMsg = alert.getText();
+       System.out.println(alertMsg);
+       Assert.assertEquals(alertMsg,"Incorrect email id.");
        alert.accept();
        // Thread.sleep(500);
 

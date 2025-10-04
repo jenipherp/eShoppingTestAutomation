@@ -29,14 +29,14 @@ public class BaseTest {
     }
 
 
-    @AfterSuite(alwaysRun = true)
-    public void tearDown(){
-        if(driver != null) {
-            driver.quit();
-        }
-
-        if(extent != null){
-            extent.flush();
-        }
-    }
+//    @AfterSuite(alwaysRun = true)
+//    public void tearDown(){
+//        if(driver != null) {
+//            driver.quit();
+//        }
+//
+//        if(extent != null){
+//            extent.flush();
+//        }
+//    }
 }

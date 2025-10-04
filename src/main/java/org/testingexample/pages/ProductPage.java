@@ -3,8 +3,8 @@ package org.testingexample.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import java.time.Duration;
 import java.util.List;
 
 public class ProductPage extends BasePage {
@@ -14,7 +14,7 @@ public class ProductPage extends BasePage {
 
     private By productCategory = By.xpath("//a[text()='Men']");
     private By productCard = By.cssSelector(".shopcategory-products .item a");
-    private By productTitle = By.xpath("//h1[@class='productdisplay-right']");
+    private By productTitle = By.cssSelector(".shopcategory-products .item p");
     private By addtoCartBtn = By.cssSelector(".productdisplay-right-button");
     private By cartLink = By.cssSelector("a[href='/cart']");
 
@@ -22,7 +22,7 @@ public class ProductPage extends BasePage {
         waitForPresence(productCategory).click();
     }
 
-    public void openProduct(){
+    public void addFirstProducttoCart(){
         waitForVisibility(productCard);
         List<WebElement> cards = driver.findElements(productCard);
         WebElement addBtn = cards.get(0);
@@ -30,6 +30,45 @@ public class ProductPage extends BasePage {
         WebElement addtoCartWait = waitForClickable(addtoCartBtn);
         addtoCartWait.click();
         System.out.println(driver.findElement(By.cssSelector(".nav-cart-count")).getText());
+    }
+
+    public void addProductByIndex(int index){
+        waitForVisibility(productCard);
+        List<WebElement> cards = driver.findElements(productCard);
+        if(index<=cards.size()){
+            WebElement card = cards.get(index);
+            card.click();
+            WebElement addtocartBtn = waitForClickable(addtoCartBtn);
+            addtocartBtn.click();
+           // wait.until(ExpectedConditions.elementToBeClickable(addtocartBtn)).click();
+        }
+    }
+
+    public void addProductByName(String name){
+        waitForVisibility(productCard);
+        List<WebElement> cards = driver.findElements(productCard);
+        for(WebElement card:cards){
+            String title = card.findElement(productTitle).getText();
+            if(title.toLowerCase().contains(name.toLowerCase())){
+                //card.click();
+                WebElement addtocartBtn = waitForClickable(addtoCartBtn);
+                addtocartBtn.click();
+               // wait.until(ExpectedConditions.elementToBeClickable(addBtn)).click();
+                return;
+            }
+        }
+    }
+
+    public void addMultipleProductbyIndexes(int... indexes){
+        for(int index:indexes){
+            addProductByIndex(index);
+        }
+    }
+
+    public void addMultipleProductbyName(String... names){
+        for (String name:names){
+            addProductByName(name);
+        }
     }
 
     public void goToCart(){
