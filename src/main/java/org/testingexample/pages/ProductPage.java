@@ -32,15 +32,16 @@ public class ProductPage extends BasePage {
         System.out.println(driver.findElement(By.cssSelector(".nav-cart-count")).getText());
     }
 
-    public void addProductByIndex(int index){
+    public void addProductByIndex(int index, int quantity){
         waitForVisibility(productCard);
         List<WebElement> cards = driver.findElements(productCard);
         if(index<=cards.size()){
             WebElement card = cards.get(index);
             card.click();
-            WebElement addtocartBtn = waitForClickable(addtoCartBtn);
-            addtocartBtn.click();
-           // wait.until(ExpectedConditions.elementToBeClickable(addtocartBtn)).click();
+            for(int i =0;i<quantity;i++) {
+                WebElement addtocartBtn = waitForClickable(addtoCartBtn);
+                addtocartBtn.click();
+            }
         }
     }
 
@@ -59,9 +60,9 @@ public class ProductPage extends BasePage {
         }
     }
 
-    public void addMultipleProductbyIndexes(int... indexes){
+    public void addMultipleProductbyIndexes( int quantity,int... indexes){
         for(int index:indexes){
-            addProductByIndex(index);
+            addProductByIndex(index, quantity);
         }
     }
 

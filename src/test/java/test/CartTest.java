@@ -9,6 +9,10 @@ import org.testng.annotations.Test;
 public class CartTest extends BaseTest{
 
     private int beforeCount;
+    private String expectedProductname = "Men Green Solid Zippered Full-Zip Slim Fit Bomber Jacket";
+    private String expectedPrice = "$85";
+    private String expectedQuantity = "3";
+    private String expectedTotal = "255";
 
     @Test(groups = "smoke")
     public void addItem(){
@@ -20,7 +24,7 @@ public class CartTest extends BaseTest{
         beforeCount = cart.getCartBadgeCount();
         System.out.println(beforeCount);
         product.openMenCategory();
-        product.addFirstProducttoCart();
+        product.addProductByIndex(0,3);
         cart.addItemToCart();
     }
     @Test(dependsOnMethods = "addItem")
@@ -39,5 +43,19 @@ public class CartTest extends BaseTest{
         int afterCount = cart.getCartBadgeCount();
         System.out.println(afterCount);
         Assert.assertEquals(afterCount, beforeCount+1);
+    }
+    @Test(dependsOnMethods = "addItem")
+    public void cartPage(){
+        CartPage cart = new CartPage(driver);
+        String actualPname = cart.getProductname();
+        String actualPPrice =cart.getPrice();
+        String actualPQuantity = cart.getQuantity();
+        String actualPTotal = cart.getTotal();
+
+        Assert.assertEquals(actualPname,expectedProductname);
+        Assert.assertEquals(actualPPrice,expectedPrice);
+        Assert.assertEquals(actualPQuantity,expectedQuantity);
+        Assert.assertEquals(actualPTotal,expectedTotal);
+
     }
 }
