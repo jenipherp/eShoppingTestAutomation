@@ -1,0 +1,38 @@
+name: Run Selenium Tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      browser:
+        description::"Browser to run on"
+        required:true
+        default:"chrome"
+      profile:
+        description::"Test Profile"
+        required:true
+        default:"smoke"
+
+jobs:
+  run-test:
+  runs-on: ubuntu-latest
+  steps:
+    -name:Checkout repo
+     uses: actions/checkout@v4
+
+    -name: Setup Java
+     uses: actions/setup-java@v4
+     with:
+      java-version: '17'
+
+    -name: Setup Maven
+     run: sudo apt-get insatall -y maven
+
+    -name: Run Selenium Tests
+     run: mvn test -Dbrowser=${{github.event.inputs.browser}} - Dprofile=${{github.event.inputs.profile}}
+
+    -name: Upload Report Artifact 
+     uses: actions/upload-artifact@v4
+     with:
+      name: test-report
+      path: reports/
+    
