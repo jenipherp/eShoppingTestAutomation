@@ -1,7 +1,7 @@
 package test;
 
 import org.testingexample.pages.CartPage;
-import org.testingexample.pages.HomePage;
+import org.testingexample.pages.LandingPage;
 import org.testingexample.pages.ProductPage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -11,12 +11,14 @@ public class CartTest extends BaseTest{
     private int beforeCount;
     private String expectedProductname = "Men Green Solid Zippered Full-Zip Slim Fit Bomber Jacket";
     private String expectedPrice = "$85";
+    private String price = "85";
     private String expectedQuantity = "3";
-    private String expectedTotal = "255";
+    private int total = Integer.parseInt(price)*Integer.parseInt(expectedQuantity);
+    private String expectedTotal = String.valueOf(total);
 
     @Test(groups = "smoke")
     public void addItem(){
-        HomePage home = new HomePage(driver);
+        LandingPage home = new LandingPage(driver);
         home.open();
 
         ProductPage product = new ProductPage(driver);
@@ -51,7 +53,7 @@ public class CartTest extends BaseTest{
         String actualPPrice =cart.getPrice();
         String actualPQuantity = cart.getQuantity();
         String actualPTotal = cart.getTotal();
-
+        System.out.println(expectedTotal);
         Assert.assertEquals(actualPname,expectedProductname);
         Assert.assertEquals(actualPPrice,expectedPrice);
         Assert.assertEquals(actualPQuantity,expectedQuantity);

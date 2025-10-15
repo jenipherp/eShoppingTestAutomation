@@ -2,7 +2,7 @@ package test;
 
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testingexample.pages.HomePage;
+import org.testingexample.pages.LandingPage;
 import org.testingexample.pages.SignUpPage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -14,7 +14,7 @@ public class SignUpTest extends BaseTest{
 
     @Test(groups = "smoke")
     public void testSignup(){
-        HomePage home = new HomePage(driver);
+        LandingPage home = new LandingPage(driver);
         home.open();
         home.goToLogin();
         home.goToSignup();

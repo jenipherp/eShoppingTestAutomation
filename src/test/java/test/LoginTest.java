@@ -3,7 +3,7 @@ package test;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testingexample.pages.HomePage;
+import org.testingexample.pages.LandingPage;
 import org.testingexample.pages.LoginPage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -17,7 +17,7 @@ public class LoginTest extends BaseTest {
 
     @Test(groups = "smoke")
     public void loginwithValidCredentials() {
-        HomePage home = new HomePage(driver);
+        LandingPage home = new LandingPage(driver);
         home.open();
         home.goToLogin();
 
@@ -31,7 +31,7 @@ public class LoginTest extends BaseTest {
 
     @Test(groups = "regression")
     public void loginwithInvalidPassword() throws AWTException {
-        HomePage home = new HomePage(driver);
+        LandingPage home = new LandingPage(driver);
         home.open();
         home.goToLogin();
 
@@ -58,7 +58,7 @@ public class LoginTest extends BaseTest {
     }
     @Test(groups = "regression")
     public void loginwithInvalidEmail() throws AWTException {
-        HomePage home = new HomePage(driver);
+        LandingPage home = new LandingPage(driver);
         home.open();
         home.goToLogin();
 
@@ -88,7 +88,7 @@ public class LoginTest extends BaseTest {
     }
     @Test(groups = "regression")
     public void loginwithoutCredentials(){
-        HomePage home = new HomePage(driver);
+        LandingPage home = new LandingPage(driver);
         home.open();
         home.goToLogin();
 

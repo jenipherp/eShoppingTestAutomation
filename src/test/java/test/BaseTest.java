@@ -5,8 +5,10 @@ import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.*;
-
+import io.github.bonigarcia.wdm.WebDriverManager;
 import java.time.Duration;
 
 public class BaseTest {
@@ -16,16 +18,34 @@ public class BaseTest {
     public static ExtentTest test;
 
     @BeforeSuite(alwaysRun = true)
-    public void SetUp() {
+    @Parameters({"browser","profile"})
+    public void SetUp(@Optional("chrome") String browserParam, @Optional("smoke") String profileParam) {
+        //read from the command line
+        String browser = System.getProperty("browser", browserParam);
+        String profile = System.getProperty("profile", profileParam);
+
+        //Extent report setup
         ExtentSparkReporter reporter = new ExtentSparkReporter("reports/extent-report.html");
         extent = new ExtentReports();
         extent.attachReporter(reporter);
 
         //launch browser
-        driver = new ChromeDriver();
+        if(browser.equalsIgnoreCase("chrome")) {
+            WebDriverManager.chromedriver().setup();
+            driver = new ChromeDriver();
+        } else if (browser.equalsIgnoreCase("firefox")) {
+            WebDriverManager.firefoxdriver().setup();
+            driver = new FirefoxDriver();
+        }else if (browser.equalsIgnoreCase("edge")) {
+            WebDriverManager.edgedriver().setup();
+            driver = new EdgeDriver();
+        }else {
+            throw new IllegalArgumentException("Invalid browser name: " + browser);
+        }
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
         driver.manage().window().maximize();
         driver.get("https://jeni-genii.onrender.com");
+        System.out.println("Running "+profile+" test suite on "+browser);
     }
 
 
