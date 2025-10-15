@@ -42,3 +42,10 @@ jobs:
         with:
           name: extent-report
           path: reports/extent-report.html
+
+
+      - name: Upload Surefire Reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-reports
+          path: target/surefire-reports/*.xml   
