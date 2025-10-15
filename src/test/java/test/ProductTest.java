@@ -1,6 +1,6 @@
 package test;
 
-import org.testingexample.pages.HomePage;
+import org.testingexample.pages.LandingPage;
 import org.testingexample.pages.ProductPage;
 import org.testng.annotations.Test;
 
@@ -8,7 +8,7 @@ public class ProductTest extends BaseTest{
 
     @Test(groups = "smoke")
     public void testProduct(){
-        HomePage home = new HomePage(driver);
+        LandingPage home = new LandingPage(driver);
         home.open();
 
         ProductPage product = new ProductPage(driver);
