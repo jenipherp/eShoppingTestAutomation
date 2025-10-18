@@ -14,7 +14,6 @@ public class ProductPage extends BasePage {
         super(driver);
     }
 
-    //private By productCategory = By.xpath("//a[text()='Men']");//*[@id="root"]/div/div[1]/ul/li[2]/a
     private By productCategory = By.xpath("(//ul[@class='nav-menu']/li)[3]");
     private By productCard = By.cssSelector(".shopcategory-products .item a");
     private By productTitle = By.cssSelector(".shopcategory-products .item p");
