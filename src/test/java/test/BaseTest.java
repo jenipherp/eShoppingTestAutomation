@@ -26,7 +26,9 @@ public class BaseTest {
         String profile = System.getProperty("profile", profileParam);
 
         //Extent report setup
-        ExtentSparkReporter reporter = new ExtentSparkReporter("reports/extent-report.html");
+        File reportFile = new File(System.getProperty("GITHUB_WORKSPACE", ".") + "/reports/extent-report.html");
+
+        ExtentSparkReporter reporter = new ExtentSparkReporter(reportFile);
         extent = new ExtentReports();
         extent.attachReporter(reporter);
 
