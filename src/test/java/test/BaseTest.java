@@ -19,7 +19,7 @@ public class BaseTest {
 
     @BeforeSuite(alwaysRun = true)
     @Parameters({"browser","profile"})
-    public void SetUp(@Optional("chrome") String browserParam, @Optional("smoke") String profileParam) {
+    public void SetUp(@Optional("firefox") String browserParam, @Optional("smoke") String profileParam) {
         //read from the command line
         String browser = System.getProperty("browser", browserParam);
         String profile = System.getProperty("profile", profileParam);
@@ -45,6 +45,7 @@ public class BaseTest {
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
         driver.manage().window().maximize();
         driver.get("https://jeni-genii.onrender.com");
+        //driver.get("http://localhost:3000/");
         System.out.println("Running "+profile+" test suite on "+browser);
     }
 
