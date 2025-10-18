@@ -29,8 +29,8 @@ public class BaseTest {
         ExtentSparkReporter reporter = new ExtentSparkReporter("reports/extent-report.html");
         extent = new ExtentReports();
         extent.attachReporter(reporter);
-        //setup for headless mode for chrome
 
+        //setup for headless mode for chrome
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless=new");
         options.addArguments("--no-sandbox");
