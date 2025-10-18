@@ -28,7 +28,13 @@ public class BaseTest {
 
         
         // Extent report setup
-        File reportFile = new File(System.getProperty("GITHUB_WORKSPACE", ".") + "/reports/extent-report.html");
+        String workspace = System.getProperty("GITHUB_WORKSPACE", System.getProperty("user.dir"));
+        File reportsDir = new File(workspace, "reports");
+        if (!reportsDir.exists()) {
+            reportsDir.mkdirs();
+        }
+
+        File reportFile = new File(reportsDir, "extent-report.html");
 
         ExtentSparkReporter reporter = new ExtentSparkReporter(reportFile);
         extent = new ExtentReports();
