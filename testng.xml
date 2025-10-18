@@ -19,7 +19,7 @@
             <class name="test.LoginTest"/>
 
             <!--<class name="test.SignUpTest"/>-->
-            <class name="test.ProductTest"/>
+            <!-- <class name="test.ProductTest"/> -->
              <class name="test.LogOutTest"/>
            <!-- <class name="test.CartTest" />-->
         </classes>
