@@ -6,8 +6,6 @@ import org.openqa.selenium.WebElement;
 
 public class CartPage extends BasePage{
 
-    //ProductPage product = new ProductPage(driver);
-
     public CartPage(WebDriver driver) {
         super(driver);
     }

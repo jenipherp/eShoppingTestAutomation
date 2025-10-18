@@ -10,11 +10,12 @@ public class LandingPage extends BasePage{
         super(driver);
     }
 
-    private By loginLink = By.cssSelector("a[href='/login']");
+    private By loginLink = By.xpath("//button[text()='Login']");
     private By signupLink = By.linkText("Signup");
 
     public void open(){
-        driver.get("https://jeni-genii.onrender.com");
+       driver.get("https://jeni-genii.onrender.com");
+        //driver.get("http://localhost:3000/");
         waitForVisibility(loginLink);
     }
 

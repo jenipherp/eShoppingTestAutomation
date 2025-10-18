@@ -14,7 +14,7 @@ public class LoginPage extends BasePage{
     private By emailId = By.name("email");
     private By pass = By.name("password");
     private By loginPath = By.xpath("//button[contains(text(),'Submit ')]");
-
+    private By logoutButton = By.xpath("//button[text()='Logout']");
     public void enterEmail(String email){
         wait.until(ExpectedConditions.visibilityOfElementLocated(emailId)).sendKeys(email);
     }
@@ -23,14 +23,11 @@ public class LoginPage extends BasePage{
         wait.until(ExpectedConditions.visibilityOfElementLocated(pass)).sendKeys(password);
     }
 
-    public void clickLogin(){
-        click(loginPath);
-//        wait.until(ExpectedConditions.elementToBeClickable(loginPath)).click();
-    }
-
     public void login(String email, String password){
         enterEmail(email);
         enterPassword(password);
-        clickLogin();
+        wait.until(ExpectedConditions.elementToBeClickable(loginPath)).click();
+        waitForVisibility(logoutButton);
+
     }
 }

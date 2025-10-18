@@ -21,7 +21,7 @@ public class SignUpTest extends BaseTest{
 
         SignUpPage signup = new SignUpPage(driver);
         signup.enterUserName("testuser");
-        signup.enterEmail("testuser@gmail.com");
+        signup.enterEmail("test@gmail.com");
         signup.enterPassword("test123");
         signup.clickCheckbox();
         signup.clickSignup();

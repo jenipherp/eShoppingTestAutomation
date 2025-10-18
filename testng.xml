@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="eShopping Tests" parallel="false">
-    <parameter name="browser" value="chrome" />
+    <parameter name="browser" value="firefox" />
     <parameter name="profile" value="smoke"/>
     <listeners>
         <listener class-name="test.TestListener" />
@@ -17,13 +17,15 @@
         </groups>
         <classes>
             <class name="test.LoginTest"/>
-          <!--  <class name="test.LogOutTest"/>
-            <class name="test.SignUpTest"/> -->
+
+            <!--<class name="test.SignUpTest"/>-->
             <class name="test.ProductTest"/>
+             <class name="test.LogOutTest"/>
+           <!-- <class name="test.CartTest" />-->
         </classes>
     </test>
 
-    <!-- Regression Test Suite -->
+    <!-- Regression Test Suite
     <test name="RegressionTests">
         <groups>
             <run>
@@ -36,5 +38,5 @@
             <class name="test.ProductTest" />
             <class name="test.CartTest" />
         </classes>
-    </test>
+    </test>-->
 </suite>
