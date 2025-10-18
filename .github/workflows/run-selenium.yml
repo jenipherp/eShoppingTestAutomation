@@ -46,7 +46,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: extent-report
-          path: reports/extent-report.html
+          path: ${{ github.workspace }}/reports/extent-report.html
 
 
       - name: Upload Surefire Reports
