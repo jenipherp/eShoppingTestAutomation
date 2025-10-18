@@ -41,17 +41,6 @@ jobs:
       - name: Run Selenium Tests
         # run: mvn test -Dbrowser=${{ github.event.inputs.browser }} -Dprofile=${{ github.event.inputs.profile }}
         run: mvn clean test -Dbrowser=chrome -Dprofile=smoke
-
-        # --- Ensure the ExtentReports file is in reports folder ---
-      - name: Ensure reports folder and move Extent Report
-        run: |
-          mkdir -p reports
-          # Adjust the source path if your BaseTest writes to a different location
-          if [ -f reports/extent-report.html ]; then
-            echo "Extent report already exists."
-          elif [ -f target/reports/extent-report.html ]; then
-            mv target/reports/extent-report.html reports/extent-report.html
-          fi
           
       - name: Upload Extent Report
         uses: actions/upload-artifact@v4
