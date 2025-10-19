@@ -86,7 +86,7 @@ jobs:
 
           git add reports/extent-report.html
           git commit -m "Update Extent Report [skip ci]" || echo "No changes to commit"
-          git push origin main
+          git push origin HEAD: main
 
 
 
