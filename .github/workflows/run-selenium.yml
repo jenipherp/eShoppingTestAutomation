@@ -81,12 +81,9 @@ jobs:
           git fetch origin main
           git checkout main
 
-          # Copy report to repo root (if not already there)
-          cp reports/extent-report.html ./reports/extent-report.html
-
           git add reports/extent-report.html
           git commit -m "Update Extent Report [skip ci]" || echo "No changes to commit"
-          git push origin HEAD: main
+          git push origin main
 
 
 
