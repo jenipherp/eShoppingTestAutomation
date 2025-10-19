@@ -58,7 +58,6 @@ jobs:
       - name: Commit Extent Report to repo
         if: success()
         run: |
-          mkdir -p reports
           # Copy extent report from possible locations
           if [ -f reports/extent-report.html ]; then
             echo "Extent report found in reports folder."
