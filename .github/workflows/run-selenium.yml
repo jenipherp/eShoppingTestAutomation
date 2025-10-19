@@ -1,5 +1,3 @@
-this is the workflow file
-
 name: eShopping Automation Tests
 
 on:
