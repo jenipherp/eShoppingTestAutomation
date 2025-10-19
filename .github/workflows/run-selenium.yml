@@ -48,19 +48,20 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
       
+          # Define the report file paths
           REPORT_FILE=reports/extent-report.html
           TEMP_REPORT_FILE="${{ github.workspace }}/reports/extent-report.html"
       
-          # Check if report file exists
+          # Check if the report file exists
           if [ ! -f "$TEMP_REPORT_FILE" ]; then
             echo "Extent report not found, skipping commit."
             exit 0
           fi
       
-          # Delete the untracked report file to prevent checkout conflict
+          # Delete the untracked report file in the current directory (to prevent conflicts)
           rm -f "$REPORT_FILE"
       
-          # Fetch and checkout the reports-updates branch (create if needed)
+          # Fetch and checkout the 'reports-updates' branch (create if needed)
           git fetch origin
       
           if git ls-remote --exit-code --heads origin reports-updates; then
@@ -70,9 +71,14 @@ jobs:
             git push -u origin reports-updates
           fi
       
-          # Copy the freshly generated report again (from test run)
+          # Log paths for debugging
+          echo "Source report: $TEMP_REPORT_FILE"
+          echo "Destination report: $REPORT_FILE"
+      
+          # Copy the freshly generated report to the repository's report directory
           cp "$TEMP_REPORT_FILE" "$REPORT_FILE"
       
+          # Add, commit, and push the updated report
           git add "$REPORT_FILE"
           git commit -m "Update Extent Report [skip ci]" || echo "No changes to commit"
           git push origin reports-updates
