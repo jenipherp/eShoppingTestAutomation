@@ -1,0 +1,99 @@
+name: eShopping Automation Tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      browser:
+        description: "Browser to run tests (chrome, firefox, edge)"
+        required: true
+        default: "chrome"
+      profile:
+        description: "Test Profile (smoke, regression)"
+        required: true
+        default: "smoke"
+
+jobs:
+  run-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 🧩 Step 1: Checkout repo
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # ☕ Step 2: Setup JDK 17
+      - name: Setup JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      # 🧱 Step 3: Setup Maven
+      - name: Setup Maven
+        run: sudo apt-get install -y maven
+
+      # 🌐 Step 4: Install Chrome browser (for Selenium)
+      - name: Install Chrome browser
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget gnupg
+          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+          echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+
+      # 🧪 Step 5: Run Selenium + TestNG tests
+      - name: Run Selenium Tests
+        run: mvn clean test -Dbrowser=${{ github.event.inputs.browser }} -Dprofile=${{ github.event.inputs.profile }}
+
+      # 📋 Step 6: Debug check for report existence
+      - name: Check if Extent Report exists
+        run: |
+          if [ -f reports/extent-report.html ]; then
+            echo "✅ Extent report found."
+          else
+            echo "⚠️ No extent report found!"
+          fi
+
+      # 📊 Step 7: Upload Extent Report (always, even on failure)
+      - name: Upload Extent Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: extent-report
+          path: |
+            reports/**/*.html
+            target/reports/**/*.html
+
+      # 🧾 Step 8: Upload Surefire Reports (JUnit XML)
+      - name: Upload Surefire Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-reports
+          path: target/surefire-reports/*.xml
+
+      # 🚀 Step 9: Commit Extent Report to separate branch (optional)
+      - name: Commit Extent Report to separate branch
+        if: success()
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+
+          if [ ! -f reports/extent-report.html ]; then
+            echo "Extent report not found, skipping commit."
+            exit 0
+          fi
+
+          if git ls-remote --exit-code --heads origin reports-updates; then
+            git fetch origin reports-updates
+            git checkout reports-updates
+          else
+            git checkout -b reports-updates
+          fi
+
+          git add reports/extent-report.html
+          git commit -m "Update Extent Report [skip ci]" || echo "No changes to commit"
+          git push -u https://x-access-token:${GH_PAT}@github.com/${{ github.repository }}.git reports-updates
