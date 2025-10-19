@@ -73,6 +73,8 @@ jobs:
 
       - name: Commit and push Extent Report
         if: success()
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
@@ -83,7 +85,8 @@ jobs:
 
           git add reports/extent-report.html
           git commit -m "Update Extent Report [skip ci]" || echo "No changes to commit"
-          git push origin main
+
+          git push https://x-access-token:$GH_PAT@github.com/meerkatjon/eShoppingTestAutomation.git main
 
 
 
