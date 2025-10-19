@@ -1,76 +1,34 @@
-name: eShopping Automation Tests
+- name: Commit Extent Report to 'reports-updates' branch
+  if: always()
+  run: |
+    git config --global user.email "github-actions[bot]@users.noreply.github.com"
+    git config --global user.name "github-actions[bot]"
 
-on:
-  workflow_dispatch:
-    inputs:
-      browser:
-        description: "Browser to run tests (chrome, firefox, edge)"
-        required: true
-        default: "chrome"
-      profile:
-        description: "Test Profile (smoke, regression)"
-        required: true
-        default: "smoke"
+    REPORT_FILE=reports/extent-report.html
+    TEMP_REPORT_FILE="${{ github.workspace }}/reports/extent-report.html"
 
-# 👇 This line is CRITICAL — gives write permission for committing reports
-permissions:
-  contents: write
+    # Check if report file exists
+    if [ ! -f "$TEMP_REPORT_FILE" ]; then
+      echo "Extent report not found, skipping commit."
+      exit 0
+    fi
 
-jobs:
-  run-tests:
-    runs-on: ubuntu-latest
+    # Delete the untracked report file to prevent checkout conflict
+    rm -f "$REPORT_FILE"
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    # Fetch and checkout the reports-updates branch (create if needed)
+    git fetch origin
 
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: 17
+    if git ls-remote --exit-code --heads origin reports-updates; then
+      git checkout reports-updates
+    else
+      git checkout -b reports-updates
+      git push -u origin reports-updates
+    fi
 
-      - name: Build and Run Tests
-        run: |
-          mvn clean test -Dbrowser=${{ github.event.inputs.browser }} -Dprofile=${{ github.event.inputs.profile }}
+    # Copy the freshly generated report again (from test run)
+    cp "$TEMP_REPORT_FILE" "$REPORT_FILE"
 
-      # ✅ Upload report as an artifact for download
-      - name: Upload Extent Report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: extent-report
-          path: ${{ github.workspace }}/reports/extent-report.html
-
-      - name: Commit Extent Report to 'reports-updates' branch
-        if: always()
-        run: |
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
-
-          REPORT_FILE=reports/extent-report.html
-
-          if [ ! -f "$REPORT_FILE" ]; then
-            echo "Extent report not found, skipping commit."
-            exit 0
-          fi
-
-          # Delete the untracked report file to prevent checkout conflict
-          rm -f "$REPORT_FILE"
-
-          # Fetch and checkout the reports-updates branch (create if needed)
-          git fetch origin
-
-          if git ls-remote --exit-code --heads origin reports-updates; then
-            git checkout reports-updates
-          else
-            git checkout -b reports-updates
-            git push -u origin reports-updates
-          fi
-
-          # Copy the freshly generated report again (from test run)
-          cp ${{ github.workspace }}/reports/extent-report.html "$REPORT_FILE"
-
-          git add "$REPORT_FILE"
-          git commit -m "Update Extent Report [skip ci]" || echo "No changes to commit"
-          git push origin reports-updates
+    git add "$REPORT_FILE"
+    git commit -m "Update Extent Report [skip ci]" || echo "No changes to commit"
+    git push origin reports-updates
