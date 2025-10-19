@@ -42,8 +42,8 @@ jobs:
           name: extent-report
           path: ${{ github.workspace }}/reports/extent-report.html
 
-      # ✅ Commit Extent Report directly to the 'test-report' branch
-      - name: Commit Extent Report to 'test-report' branch
+      # ✅ Commit Extent Report directly to the 'reports-updates' branch
+      - name: Commit Extent Report to 'reports-updates' branch
         if: always()
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
@@ -54,13 +54,18 @@ jobs:
             exit 0
           fi
 
-          # Check out the 'test-report' branch directly
-          git fetch origin test-report
-          git checkout test-report
+          git fetch origin
 
-          # Replace the existing HTML report with the new one
+          # Check if the 'reports-updates' branch exists on remote
+          if git ls-remote --exit-code --heads origin reports-updates; then
+            git checkout reports-updates
+          else
+            git checkout -b reports-updates
+            git push -u origin reports-updates
+          fi
+
           cp ${{ github.workspace }}/reports/extent-report.html reports/extent-report.html
 
           git add reports/extent-report.html
           git commit -m "Update Extent Report [skip ci]" || echo "No changes to commit"
-          git push origin test-report
+          git push origin reports-updates
