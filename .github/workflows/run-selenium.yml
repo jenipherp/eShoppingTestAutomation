@@ -71,7 +71,7 @@ jobs:
             exit 1
           fi
 
-      - name: Commit and push Extent Report
+      - name: Commit Extent Report to separate branch
         if: success()
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
@@ -79,14 +79,17 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
 
-          # Ensure we’re on main (not detached HEAD)
-          git fetch origin main
-          git checkout main
+          # Fetch and create reports branch if it doesn't exist
+          git fetch origin reports-updates || true
+          git checkout -B reports-updates
 
+          # Copy/move report into branch
+          cp reports/extent-report.html ./reports/extent-report.html
+
+          # Commit changes
           git add reports/extent-report.html
           git commit -m "Update Extent Report [skip ci]" || echo "No changes to commit"
 
-          git push https://x-access-token:$GH_PAT@github.com/meerkatjon/eShoppingTestAutomation.git main
-
-
+          # Push to reports-updates branch
+          git push -f https://x-access-token:${GH_PAT}@github.com/meerkatjon/eShoppingTestAutomation.git reports-updates
 
