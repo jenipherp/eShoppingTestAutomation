@@ -39,37 +39,19 @@ jobs:
           sudo apt-get install -y google-chrome-stable
 
       - name: Run Selenium Tests
-        # run: mvn test -Dbrowser=${{ github.event.inputs.browser }} -Dprofile=${{ github.event.inputs.profile }}
         run: mvn clean test -Dbrowser=chrome -Dprofile=smoke
-          
+
       - name: Upload Extent Report
         uses: actions/upload-artifact@v4
         with:
           name: extent-report
           path: ${{ github.workspace }}/reports/extent-report.html
 
-
       - name: Upload Surefire Reports
         uses: actions/upload-artifact@v4
         with:
           name: surefire-reports
-          path: target/surefire-reports/*.xml   
-
-      - name: Commit Extent Report to repo
-        if: success()
-        run: |
-          # Copy extent report from possible locations
-          if [ -f reports/extent-report.html ]; then
-            echo "Extent report found in reports folder."
-          elif [ -f target/reports/extent-report.html ]; then
-            cp target/reports/extent-report.html reports/extent-report.html
-          elif [ -f extent-report.html ]; then
-            cp extent-report.html reports/extent-report.html
-          else
-            echo "Extent report not found!"
-            ls -R
-            exit 1
-          fi
+          path: target/surefire-reports/*.xml
 
       - name: Commit Extent Report to separate branch
         if: success()
@@ -79,7 +61,13 @@ jobs:
           # Configure Git user
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
-      
+
+          # Ensure report exists
+          if [ ! -f reports/extent-report.html ]; then
+            echo "Extent report not found, skipping commit."
+            exit 0
+          fi
+
           # Check if remote branch exists, fetch if it does, otherwise create locally
           if git ls-remote --exit-code --heads origin reports-updates; then
             git fetch origin reports-updates
@@ -87,12 +75,8 @@ jobs:
           else
             git checkout -b reports-updates
           fi
-      
-          # Commit and push the report if it exists
-          if [ -f reports/extent-report.html ]; then
-            git add reports/extent-report.html
-            git commit -m "Update Extent Report [skip ci]" || echo "No changes to commit"
-            git push -u https://x-access-token:${GH_PAT}@github.com/meerkatjon/eShoppingTestAutomation.git reports-updates
-          else
-            echo "Extent report not found, skipping commit."
-          fi
+
+          # Commit and push the report
+          git add reports/extent-report.html
+          git commit -m "Update Extent Report [skip ci]" || echo "No changes to commit"
+          git push -u https://x-access-token:${GH_PAT}@github.com/meerkatjon/eShoppingTestAutomation.git reports-updates
