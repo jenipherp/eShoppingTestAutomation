@@ -42,6 +42,7 @@ jobs:
         run: mvn clean test -Dbrowser=chrome -Dprofile=smoke
 
       - name: Upload Extent Report
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: extent-report
@@ -54,7 +55,8 @@ jobs:
           path: target/surefire-reports/*.xml
 
       - name: Commit Extent Report to separate branch
-        if: success()
+        # if: success()
+        if: always()
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
         run: |
@@ -69,12 +71,16 @@ jobs:
           fi
 
           # Check if remote branch exists, fetch if it does, otherwise create locally
-          if git ls-remote --exit-code --heads origin reports-updates; then
-            git fetch origin reports-updates
-            git checkout reports-updates
-          else
-            git checkout -b reports-updates
-          fi
+          # if git ls-remote --exit-code --heads origin reports-updates; then
+          #   git fetch origin reports-updates
+          #   git checkout reports-updates
+          # else
+          #   git checkout -b reports-updates
+          # fi
+
+          git fetch origin
+          git checkout reports-updates || git checkout -b reports-updates
+
 
           # Commit and push the report
           git add reports/extent-report.html
