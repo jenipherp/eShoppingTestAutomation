@@ -38,8 +38,14 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y google-chrome-stable
 
+      # - name: Run Selenium Tests
+      #   run: mvn clean test -Dbrowser=chrome -Dprofile=smoke
+
       - name: Run Selenium Tests
-        run: mvn clean test -Dbrowser=chrome -Dprofile=smoke
+        run: |
+          mkdir -p reports
+          mvn clean test -Dbrowser=${{ github.event.inputs.browser }} -Dprofile=${{ github.event.inputs.profile }}
+
 
       - name: Upload Extent Report
         if: always()
