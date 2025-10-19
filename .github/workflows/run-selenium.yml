@@ -42,21 +42,25 @@ jobs:
           name: extent-report
           path: ${{ github.workspace }}/reports/extent-report.html
 
-      # ✅ Commit Extent Report directly to the 'reports-updates' branch
       - name: Commit Extent Report to 'reports-updates' branch
         if: always()
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
 
-          if [ ! -f reports/extent-report.html ]; then
+          REPORT_FILE=reports/extent-report.html
+
+          if [ ! -f "$REPORT_FILE" ]; then
             echo "Extent report not found, skipping commit."
             exit 0
           fi
 
+          # Delete the untracked report file to prevent checkout conflict
+          rm -f "$REPORT_FILE"
+
+          # Fetch and checkout the reports-updates branch (create if needed)
           git fetch origin
 
-          # Check if the 'reports-updates' branch exists on remote
           if git ls-remote --exit-code --heads origin reports-updates; then
             git checkout reports-updates
           else
@@ -64,8 +68,9 @@ jobs:
             git push -u origin reports-updates
           fi
 
-          cp ${{ github.workspace }}/reports/extent-report.html reports/extent-report.html
+          # Copy the freshly generated report again (from test run)
+          cp ${{ github.workspace }}/reports/extent-report.html "$REPORT_FILE"
 
-          git add reports/extent-report.html
+          git add "$REPORT_FILE"
           git commit -m "Update Extent Report [skip ci]" || echo "No changes to commit"
           git push origin reports-updates
