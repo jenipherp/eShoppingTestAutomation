@@ -71,14 +71,22 @@ jobs:
             exit 1
           fi
 
-          # Commit and push the report
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
+      - name: Commit and push Extent Report
+        if: success()
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
 
-          git fetch
-          git checkout ${{ github.ref }}
+          # Ensure we’re on main (not detached HEAD)
+          git fetch origin main
+          git checkout main
+
+          # Copy report to repo root (if not already there)
+          cp reports/extent-report.html ./reports/extent-report.html
 
           git add reports/extent-report.html
           git commit -m "Update Extent Report [skip ci]" || echo "No changes to commit"
-          git push
+          git push origin main
+
+
 
