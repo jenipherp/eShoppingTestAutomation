@@ -54,3 +54,32 @@ jobs:
         with:
           name: surefire-reports
           path: target/surefire-reports/*.xml   
+
+      - name: Commit Extent Report to repo
+        if: success()
+        run: |
+          mkdir -p reports
+          # Copy extent report from possible locations
+          if [ -f reports/extent-report.html ]; then
+            echo "Extent report found in reports folder."
+          elif [ -f target/reports/extent-report.html ]; then
+            cp target/reports/extent-report.html reports/extent-report.html
+          elif [ -f extent-report.html ]; then
+            cp extent-report.html reports/extent-report.html
+          else
+            echo "Extent report not found!"
+            ls -R
+            exit 1
+          fi
+
+          # Commit and push the report
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+
+          git fetch
+          git checkout ${{ github.ref }}
+
+          git add reports/extent-report.html
+          git commit -m "Update Extent Report [skip ci]" || echo "No changes to commit"
+          git push
+
