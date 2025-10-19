@@ -76,20 +76,23 @@ jobs:
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
         run: |
+          # Configure Git user
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
-
-          # Fetch and create reports branch if it doesn't exist
-          git fetch origin reports-updates || true
-          git checkout -B reports-updates
-
-          # Copy/move report into branch
-          cp reports/extent-report.html ./reports/extent-report.html
-
-          # Commit changes
-          git add reports/extent-report.html
-          git commit -m "Update Extent Report [skip ci]" || echo "No changes to commit"
-
-          # Push to reports-updates branch
-          git push -f https://x-access-token:${GH_PAT}@github.com/meerkatjon/eShoppingTestAutomation.git reports-updates
-
+      
+          # Check if remote branch exists, fetch if it does, otherwise create locally
+          if git ls-remote --exit-code --heads origin reports-updates; then
+            git fetch origin reports-updates
+            git checkout reports-updates
+          else
+            git checkout -b reports-updates
+          fi
+      
+          # Commit and push the report if it exists
+          if [ -f reports/extent-report.html ]; then
+            git add reports/extent-report.html
+            git commit -m "Update Extent Report [skip ci]" || echo "No changes to commit"
+            git push -u https://x-access-token:${GH_PAT}@github.com/meerkatjon/eShoppingTestAutomation.git reports-updates
+          else
+            echo "Extent report not found, skipping commit."
+          fi
