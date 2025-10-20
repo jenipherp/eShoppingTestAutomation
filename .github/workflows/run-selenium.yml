@@ -70,7 +70,29 @@ jobs:
       
           # Add, commit, and push the updated report file directly to 'main'
           git add "$REPORT_FILE"
-          git commit -m "Update Extent Report [skip ci]" || echo "No changes to commit"
+          git commit -m "Update Extent Report " || echo "No changes to commit"
           git push origin main
 
+          # 👇 Commit Extent Report to 'Portfolio' repository
+      - name: Commit Extent Report to TestAutomationPortfolio Repository
+        if: always()
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
 
+          # Clone the TestAutomationPortfolio repository
+          git clone --branch main https://github.com/${{ github.repository_owner }}/TestAutomationPortfolio.git /tmp/TestAutomationPortfolio
+
+          # Navigate into the TestAutomationPortfolio repository
+          cd /tmp/TestAutomationPortfolio
+
+          # Ensure the 'reports' folder exists in TestAutomationPortfolio repo
+          mkdir -p reports
+
+          # Copy the extent report to the 'reports' folder in TestAutomationPortfolio repository
+          cp ${{ github.workspace }}/reports/extent-report.html reports/extent-report.html
+
+          # Add the file, commit the change, and push to the 'main' branch of TestAutomationPortfolio
+          git add reports/extent-report.html
+          git commit -m "Update Extent Report from eShoppingAutomation " || echo "No changes to commit"
+          git push origin main
