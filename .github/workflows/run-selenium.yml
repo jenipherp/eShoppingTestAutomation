@@ -42,43 +42,40 @@ jobs:
           name: extent-report
           path: ${{ github.workspace }}/reports/extent-report.html
 
-      - name: Commit Extent Report to 'reports-updates' branch
+      - name: Commit Extent Report to 'main' branch
         if: always()
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
       
-          # Define the report file paths
-          REPORT_FILE=reports/extent-report.html
-          TEMP_REPORT_FILE="${{ github.workspace }}/reports/extent-report.html"
-      
-          # Check if the report file exists
-          if [ ! -f "$TEMP_REPORT_FILE" ]; then
+          # Define the absolute paths
+          REPORT_FILE="${{ github.workspace }}/reports/extent-report.html"
+          
+          # Check the current directory for debugging
+          echo "Current working directory: $(pwd)"
+          
+          # Ensure the report file exists
+          if [ ! -f "$REPORT_FILE" ]; then
             echo "Extent report not found, skipping commit."
             exit 0
           fi
       
-          # Delete the untracked report file in the current directory (to prevent conflicts)
-          rm -f "$REPORT_FILE"
-      
-          # Fetch and checkout the 'reports-updates' branch (create if needed)
+          # Fetch and checkout the 'main' branch
+          echo "Fetching and checking out the main branch"
           git fetch origin
       
-          if git ls-remote --exit-code --heads origin reports-updates; then
-            git checkout reports-updates
-          else
-            git checkout -b reports-updates
-            git push -u origin reports-updates
-          fi
+          git checkout main
       
-          # Log paths for debugging
-          echo "Source report: $TEMP_REPORT_FILE"
-          echo "Destination report: $REPORT_FILE"
+          # Ensure that the report file is updated from the test run
+          echo "Updating the extent report file"
+          cp "$REPORT_FILE" "${{ github.workspace }}/reports/extent-report.html"
       
-          # Copy the freshly generated report to the repository's report directory
-          cp "$TEMP_REPORT_FILE" "$REPORT_FILE"
+          # Log the update
+          echo "Source report: $REPORT_FILE"
+          echo "Destination report: ${{ github.workspace }}/reports/extent-report.html"
       
-          # Add, commit, and push the updated report
-          git add "$REPORT_FILE"
+          # Add, commit, and push the updated report file directly to 'main'
+          git add "${{ github.workspace }}/reports/extent-report.html"
           git commit -m "Update Extent Report [skip ci]" || echo "No changes to commit"
-          git push origin reports-updates
+          git push origin main
+
