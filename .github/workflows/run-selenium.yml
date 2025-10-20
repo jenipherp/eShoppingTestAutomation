@@ -48,7 +48,7 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
       
-          # Define the absolute paths
+          # Define the report file path in the workspace
           REPORT_FILE="${{ github.workspace }}/reports/extent-report.html"
           
           # Check the current directory for debugging
@@ -63,19 +63,14 @@ jobs:
           # Fetch and checkout the 'main' branch
           echo "Fetching and checking out the main branch"
           git fetch origin
-      
           git checkout main
       
-          # Ensure that the report file is updated from the test run
-          echo "Updating the extent report file"
-          cp "$REPORT_FILE" "${{ github.workspace }}/reports/extent-report.html"
-      
           # Log the update
-          echo "Source report: $REPORT_FILE"
-          echo "Destination report: ${{ github.workspace }}/reports/extent-report.html"
+          echo "Updating the extent report file"
       
           # Add, commit, and push the updated report file directly to 'main'
-          git add "${{ github.workspace }}/reports/extent-report.html"
+          git add "$REPORT_FILE"
           git commit -m "Update Extent Report [skip ci]" || echo "No changes to commit"
           git push origin main
+
 
