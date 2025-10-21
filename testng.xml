@@ -9,7 +9,7 @@
 
     <!-- Smoke Test Suite -->
 
-    <test name="SmokeTests">
+    <!-- <test name="SmokeTests">
         <groups>
             <run>
                 <include name="smoke"/>
@@ -20,12 +20,12 @@
 
             <!--<class name="test.SignUpTest"/>-->
             <!-- <class name="test.ProductTest"/> -->
-             <class name="test.LogOutTest"/>
+             <!-- <class name="test.LogOutTest"/> -->
            <!-- <class name="test.CartTest" />-->
-        </classes>
-    </test>
+        <!-- </classes>
+    </test> --> 
 
-    <!-- Regression Test Suite
+   <!-- Regression Test Suite -->
     <test name="RegressionTests">
         <groups>
             <run>
@@ -34,9 +34,9 @@
         </groups>
         <classes>
             <class name="test.SignUpTest" />
-            <class name="test.LoginTest" />
+            <!-- <class name="test.LoginTest" />
             <class name="test.ProductTest" />
-            <class name="test.CartTest" />
+            <class name="test.CartTest" /> -->
         </classes>
-    </test>-->
+    </test>
 </suite>
