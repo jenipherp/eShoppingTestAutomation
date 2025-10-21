@@ -18,9 +18,6 @@
         </groups>
         <classes>
             <class name="test.SignUpTest" />
-            <!-- <class name="test.LoginTest" />
-            <class name="test.ProductTest" />
-            <class name="test.CartTest" /> -->
         </classes>
     </test>
 </suite>
