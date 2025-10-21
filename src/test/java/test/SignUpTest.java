@@ -12,7 +12,7 @@ import java.util.Objects;
 
 public class SignUpTest extends BaseTest{
 
-    @Test(groups = "regression")
+    @Test(groups = {"regression"})
     public void testSignup(){
         LandingPage home = new LandingPage(driver);
         home.open();
