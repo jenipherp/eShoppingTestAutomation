@@ -47,52 +47,47 @@ jobs:
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
-      
-          # Define the report file path in the workspace
+
           REPORT_FILE="${{ github.workspace }}/reports/extent-report.html"
-          
-          # Check the current directory for debugging
           echo "Current working directory: $(pwd)"
-          
-          # Ensure the report file exists
+
           if [ ! -f "$REPORT_FILE" ]; then
             echo "Extent report not found, skipping commit."
             exit 0
           fi
-      
-          # Fetch and checkout the 'main' branch
+
           echo "Fetching and checking out the main branch"
           git fetch origin
           git checkout main
-      
-          # Log the update
+
+          echo "Rebasing local main with latest from origin"
+          git pull --rebase origin main || true
+
           echo "Updating the extent report file"
-      
-          # Add, commit, and push the updated report file directly to 'main'
           git add "$REPORT_FILE"
-          git commit -m "Update Extent Report " || echo "No changes to commit"
-          git push origin main
+          git commit -m "Update Extent Report" || echo "No changes to commit"
+
+          echo "Pushing updated report to main branch"
+          git push origin main || (git pull --rebase origin main && git push origin main)
 
       - name: Commit Extent Report to Portfolio Repository
         if: always()
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
-      
-          # Clone the Portfolio repository using a Personal Access Token for authentication
+
+          echo "Cloning Portfolio repository..."
           git clone https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository_owner }}/TestAutomationPortfolio.git /tmp/TestAutomationPortfolio
-      
-          # Navigate into the Portfolio repository
+
           cd /tmp/TestAutomationPortfolio
-      
-          # Ensure the 'reports' folder exists in Portfolio repo
           mkdir -p reports
-      
-          # Copy the extent report to the 'reports' folder in Portfolio repository
+
+          echo "Copying extent report to Portfolio repo"
           cp ${{ github.workspace }}/reports/extent-report.html reports/extent-report.html
-      
-          # Add the file, commit the change, and push to the 'main' branch of Portfolio
+
           git add reports/extent-report.html
           git commit -m "Update Extent Report from eShoppingAutomation" || echo "No changes to commit"
-          git push origin main
 
+          echo "Pushing report to Portfolio repository"
+          git pull --rebase origin main || true
+          git push origin main || (git pull --rebase origin main && git push origin main)
