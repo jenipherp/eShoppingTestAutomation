@@ -7,23 +7,7 @@
         <listener class-name="test.TestListener" />
     </listeners>
 
-    <!-- Smoke Test Suite -->
-
-    <!-- <test name="SmokeTests"> 
-        <groups>
-            <run>
-                <include name="smoke"/>
-            </run>
-        </groups>
-        <classes>
-            <class name="test.LoginTest"/>
-
-            <class name="test.SignUpTest"/>
-            <class name="test.ProductTest"/> 
-             <class name="test.LogOutTest"/> 
-           <class name="test.CartTest" />
-         </classes>
-    </test> -->
+    <!-- Smoke Test Suite disabled -->
 
    <!-- Regression Test Suite -->
     <test name="RegressionTests">
