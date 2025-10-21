@@ -29,4 +29,11 @@ public class SignUpTest extends BaseTest{
         new WebDriverWait(driver, Duration.ofSeconds(10)).until(ExpectedConditions.urlContains("/Signup"));
         Assert.assertTrue(Objects.requireNonNull(driver.getCurrentUrl()).contains("/Signup"));
     }
+
+    // Dummy test to verify TestNG picks up the regression group
+    @Test(groups = {"regression"})
+    public void testDummy() {
+        System.out.println("Dummy test ran!");
+        Assert.assertTrue(true);
+    }
 }
