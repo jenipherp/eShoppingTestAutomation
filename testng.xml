@@ -8,7 +8,18 @@
     </listeners>
 
     <!-- Smoke Test Suite disabled -->
-
+    <test name="RegressionTests">
+        <groups>
+            <run>
+                <include name="smoke"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="test.LoginTest" />
+            <class name="test.LogOutTest" />
+        </classes>
+    </test>
+    
    <!-- Regression Test Suite -->
     <test name="RegressionTests">
         <groups>
