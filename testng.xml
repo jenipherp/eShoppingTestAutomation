@@ -8,7 +8,7 @@
     </listeners>
 
     <!-- Smoke Test Suite disabled -->
-    <test name="RegressionTests">
+    <test name="SmokeTests">
         <groups>
             <run>
                 <include name="smoke"/>
