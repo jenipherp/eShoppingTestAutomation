@@ -74,7 +74,7 @@
         </plugins>
     </build> -->
 
-       <build>
+     <build>
         <plugins>
             <!-- ✅ Maven Surefire Plugin for TestNG -->
             <plugin>
@@ -82,40 +82,21 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
                 <configuration>
-                         <groups>${profile}</groups>
-                    <suiteXmlFiles>
-                        <suiteXmlFile>smoke-suite.xml</suiteXmlFile>
-                    </suiteXmlFiles>
-                    <!-- Allow passing browser/profile dynamically -->
-                    <systemPropertyVariables>
-                        <browser>${browser}</browser>
-                        <profile>${profile}</profile>
-                    </systemPropertyVariables>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-    <build>
-        <plugins>
-            <!-- ✅ Maven Surefire Plugin for TestNG -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.5</version>
-                <configuration>
-                         <groups>${profile}</groups>
-                    <suiteXmlFiles>
-                        <suiteXmlFile>regression-suite.xml</suiteXmlFile>
-                    </suiteXmlFiles>
-                    <!-- Allow passing browser/profile dynamically -->
-                    <systemPropertyVariables>
-                        <browser>${browser}</browser>
-                        <profile>${profile}</profile>
-                    </systemPropertyVariables>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-    
+                    <!-- Run only the selected group -->
+                    <groups>${profile}</groups>
 
+                    <!-- Dynamically pick XML based on profile -->
+                    <suiteXmlFiles>
+                        <suiteXmlFile>${profile}-suite.xml</suiteXmlFile>
+                    </suiteXmlFiles>
+
+                    <!-- Pass variables to tests -->
+                    <systemPropertyVariables>
+                        <browser>${browser}</browser>
+                        <profile>${profile}</profile>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
