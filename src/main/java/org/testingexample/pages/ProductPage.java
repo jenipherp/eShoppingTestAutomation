@@ -14,7 +14,7 @@ public class ProductPage extends BasePage {
         super(driver);
     }
 
-    private By productCategory = By.xpath("(//ul[@class='nav-menu']/li)[3]");
+    private By productCategory = By.xpath("(//ul[@class='nav-menu']/li)[2]");
     private By productCard = By.cssSelector(".shopcategory-products .item a");
     private By productTitle = By.cssSelector(".shopcategory-products .item p");
     private By addtoCartBtn = By.cssSelector(".productdisplay-right-button");
@@ -22,8 +22,11 @@ public class ProductPage extends BasePage {
 
     public void openMenCategory() {
         WebElement menCategory = waitForClickable(productCategory);
+        // scroll into view (helps in headless)
+    ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", menCategory);
         menCategory.click();
-        wait.until(ExpectedConditions.urlContains("/women"));
+        wait.until(ExpectedConditions.or(ExpectedConditions.urlContains("/men"), ExpectedConditions.presenceOfElementLocated(productCard)
+    ));
         waitForVisibility(productCard);
     }
 
@@ -32,8 +35,9 @@ public class ProductPage extends BasePage {
         waitForVisibility(productCard);
         List<WebElement> cards = driver.findElements(productCard);
         if (cards.size() > 0) {
-            WebElement addBtn = cards.get(3);
-            addBtn.click();
+            WebElement addBtn = cards.get(0);
+            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", addBtn);
+            wait.until(ExpectedConditions.elementToBeClickable(addBtn)).click();
         }
 
         WebElement addtoCartWait = waitForClickable(addtoCartBtn);
