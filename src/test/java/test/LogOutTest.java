@@ -7,7 +7,7 @@ public class LogOutTest extends BaseTest{
 
 
     // @Test(dependsOnMethods = "test.LoginTest.loginwithValidCredentials",groups = "smoke")
-    @Test(dependsOnMethods = "test.ProductTest",groups = "smoke")
+    @Test(dependsOnMethods = "test.ProductTest.testProduct",groups = "smoke")
     public void logout(){
         //HomePage homePage = new HomePage(driver);
         LogOutPage logOutPage = new LogOutPage(driver);
