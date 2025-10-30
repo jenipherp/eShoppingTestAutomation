@@ -5,7 +5,7 @@ import org.testingexample.pages.ProductPage;
 import org.testng.annotations.Test;
 
 public class ProductTest extends BaseTest {
-    @Test(dependsOnMethods = "test.LoginTest.loginwithValidCredentials", groups = {"smoke"})
+    @Test(dependsOnMethods = "test.LoginTest.loginwithValidCredentials")
     public void testProduct() throws InterruptedException {
 
         ProductPage product = new ProductPage(driver);
