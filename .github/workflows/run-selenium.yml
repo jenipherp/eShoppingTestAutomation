@@ -45,6 +45,10 @@ jobs:
           name: extent-report
           path: ${{ github.workspace }}/reports/extent-report.html
 
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4    
+
       - name: Commit Extent Report to 'main' branch
         if: always()
         run: |
