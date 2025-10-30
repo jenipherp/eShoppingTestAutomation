@@ -5,8 +5,6 @@ import org.testng.annotations.Test;
 
 public class LogOutTest extends BaseTest{
 
-
-    // @Test(dependsOnMethods = "test.LoginTest.loginwithValidCredentials",groups = "smoke")
     @Test(groups = "smoke")
     public void logout(){
         //HomePage homePage = new HomePage(driver);
