@@ -15,7 +15,7 @@ on:
 # 👇 This line is CRITICAL — gives write permission for committing reports
 permissions:
   contents: write
-
+  
 jobs:
   run-tests:
     runs-on: ubuntu-latest
@@ -44,6 +44,7 @@ jobs:
         with:
           name: extent-report
           path: ${{ github.workspace }}/reports/extent-report.html
+ 
 
       - name: Commit Extent Report to 'main' branch
         if: always()
